@@ -1,0 +1,61 @@
+@page
+@model IdentityServer.Pages.Home.Index
+
+@*Renderiza uma NAVBAR caso um usuário com permissão de acessar o Identity Server chegue até a página principal*@
+ <partial name="_Nav" />
+
+    <div class="containerbar authenticate-bg">
+        <div class="container">
+            <div class="auth-box forgot-password-box">
+                <div class="row no-gutters align-items-center justify-content-center">
+                    <div class="col-12">
+                        <div class="auth-box-center">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-head ">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <img src="~/images/logo-login.svg" class="img-fluid" alt="logo">
+                                            </div>
+                                            <div class="col-10">
+                                                <h3 class="pt-3 text-center">Bem-vindo ao Servidor de Identidade da Prefeitura Brasil</h3>
+                                                <small><p class="text-muted text-center">(versão @Model.Version)</p></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <ul class="pt-4">
+                                                <li>
+                                                    Você pode consultar o
+                                                    <a target="_blank" href="~/.well-known/openid-configuration">"discovery document"</a>
+                                                    para visualizar metadados e links de todos os enpoints e informações chave sobre este servidor.
+                                                </li>
+                                                <li>
+                                                    Clique <a href="~/diagnostics">aqui</a> para visualizar as claims da sessão corrente.
+                                                </li>
+                                                <li>
+                                                    Cliquei <a href="~/grants">aqui</a> para gerenciar os stored grants.
+                                                </li>
+                                                <li>
+                                                    Clique <a href="~/ciba/all">aqui</a> para visualizar os pedidos de login CIBA pendentes.
+                                                    <small>
+                                                        <a target="_blank" href="https://docs.duendesoftware.com/identityserver/v6/ui/ciba/">O que é CIBA?</a>
+                                                    </small>
+                                                </li>
+                                                <li>
+                                                    Links para
+                                                    <a href="https://github.com/duendesoftware/IdentityServer">repositorio do github</a>,
+                                                    e também <a href="https://github.com/duendesoftware/samples"> exemplos prontos pra uso</a>.
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

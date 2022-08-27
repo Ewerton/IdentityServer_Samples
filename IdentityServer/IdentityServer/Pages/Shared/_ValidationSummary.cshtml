@@ -1,0 +1,12 @@
+﻿@if (ViewContext.ModelState.IsValid == false)
+{
+    // Mostra o validation message apenas para erros que não saão específicos de um campo da tela.
+    // Erros específicos de um campo na tela devem ser mostrados logo abaixo do respectivo campo.
+    @if (ViewContext.ModelState.Where(x => String.IsNullOrWhiteSpace(x.Key)).Any())
+    {
+        <div class="alert alert-danger">
+            <strong>Erro</strong>
+            <div asp-validation-summary="ModelOnly" class="danger"></div>
+        </div>
+    }
+}

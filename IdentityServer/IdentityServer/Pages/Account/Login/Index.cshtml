@@ -1,0 +1,159 @@
+@page
+@using IdentityServer.Pages.Account.Login
+@using PrefeituraBrasil.IdentityServer.Models.Enums
+@using PrefeituraBrasil.Shared.Extensions
+@model IdentityServer.Pages.Account.Login.Index
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "/Pages/Shared/_AuthLayout.cshtml";
+    ViewData["Title"] = "Acessar o Sistema";
+}
+
+<div class="containerbar authenticate-bg">
+    <div class="container">
+        <div class="auth-box login-box">
+            <div class="row no-gutters align-items-center justify-content-center">
+                @*Login utilizando o Provedor Local*@
+                <div class="col-md-6 col-lg-5">
+                    <div class="auth-box-center">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="auth-box-logo mb-4 text-center">
+                                    <img src="~/images/logo-light.svg" width="350px" class="img-fluid " alt="logo">
+                                    <p class="mb-0 mt-2 mb-2">O Governo Digital mais próximo do cidadão</p>
+                                </div>
+
+                                <hr />
+
+                                @if (Model.View.EnableLocalLogin)
+                                {
+                                    <form id="account" class="general-form" method="post" asp-page="/Account/Login/Index">
+                                        <input type="hidden" asp-for="Input.ReturnUrl" />
+
+                                        @* <div asp-validation-summary="All" class="text-danger"></div>*@
+                                        <partial name="_ValidationSummary" />
+
+                                        <div class="form-group">
+                                            <span>Fazer login com: </span>
+                                            <span id="lblLoginPorEmail" class="px-2">
+                                                @Html.RadioButtonFor(m => m.Input.TipoLogin, TipoLogin.EMAIL, new { @id = "rdoLoginPorEmail", name = "tipoLogin", Checked = Model.Input.TipoLogin == TipoLogin.EMAIL ? "checked" : "" })
+                                                @TipoLogin.EMAIL.GetDescription()
+                                            </span>
+                                            <span id="lblLoginPorCPF" class="px-2">
+                                                @Html.RadioButtonFor(m => m.Input.TipoLogin, TipoLogin.CPF, new { @id = "rdoLoginPorCPF", name = "tipoLogin", Checked = Model.Input.TipoLogin == TipoLogin.CPF ? "checked" : "" })
+                                                @TipoLogin.CPF
+                                            </span>
+                                            <span asp-validation-for="Input.TipoLogin" class="text-danger"></span>
+                                        </div>
+
+                                        <div id="divLoginPorEmail" class="form-group">
+                                            <label asp-for="Input.Email" class="form-label"></label>
+                                            <input id="txtLoginEmail" asp-for="Input.Email" class="form-control" placeholder="seuemail@exemplo.com" autocomplete="username" aria-required="true" autofocus />
+                                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        </div>
+                                        <div id="divLoginPorCPF" class="form-group visually-hidden">
+                                            <label asp-for="Input.CPF" class="form-label"></label>
+                                            <input id="txtLoginCPF" asp-for="Input.CPF" class="form-control cpf" placeholder="000.000.000-00" autocomplete="cpf" aria-required="true" />
+                                            <span asp-validation-for="Input.CPF" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="Input.Password" class="form-label"></label>
+                                            <input asp-for="Input.Password" asp-format="" class="form-control" placeholder="digite sua senha" autocomplete="current-password" aria-required="true" />
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-row mb-3">
+                                            @if (Model.View.AllowRememberLogin)
+                                            {
+                                                <div class="col-sm-6">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="Input.RememberMe" asp-for="Input.RememberLogin">
+                                                        <label class="custom-control-label font-15" for="Input.RememberMe">
+                                                            @Html.DisplayNameFor(m => m.Input.RememberLogin)
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="col-sm-6">
+                                                <div class="forgot-psw">
+                                                    <a asp-page="/Account/Password/ForgotPassword" asp-route-returnUrl="@Model.Input.ReturnUrl">Esqueci a senha</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" id="login-submit" name="Input.Button" value="login" class="btn btn-primary btn-lg btn-block rounded font-weight-bold font-16">
+                                            <i class="spb-spb"></i> Acessar o sistema
+                                        </button>
+                                       @* <button class="btn btn-secondary btn-lg btn-block rounded font-16" name="Input.Button" value="cancel">
+                                            <i class="spb-spb"></i> Cancelar
+                                        </button>*@
+                                    </form>
+                                }
+                                <div class="login-or">
+                                    <h6 class="text-muted">ou</h6>
+                                </div>
+                                <div class="social-login text-center">
+                                    <p class="mb-2 mt-2">
+                                        Não tem uma conta? <a asp-page="/Account/Register/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">Registre-se</a>
+                                    </p>
+                                    <a href="#" class="btnVoltar btn btn-link btn-lg btn-block font-18"><i class="mdi mdi-google mr-2"></i>Voltar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @* Login utilizando provedores externos*@
+                @if (Model.View.VisibleExternalProviders.Any())
+                {
+                    <div class="col-md-6 col-lg-5 p-3">
+                        <div class="auth-box-center  mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Login usando uma conta externa</h4>
+                                </div>
+                                <div class="card-body">
+
+                                    <ul class="list-inline">
+                                        @foreach (var provider in Model.View.VisibleExternalProviders)
+                                        {
+                                            <li class="list-inline-item">
+                                                <a class="btn btn-secondary" asp-page="/ExternalLogin/Challenge" asp-route-scheme="@provider.AuthenticationScheme" asp-route-returnUrl="@Model.Input.ReturnUrl">
+                                                    @provider.DisplayName
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (!Model.View.EnableLocalLogin && !Model.View.VisibleExternalProviders.Any())
+                {
+                    <div class="alert alert-warning">
+                        <strong>Invalid login request</strong>
+                        There are no login schemes configured for this request.
+                    </div>
+                }
+
+            </div>
+
+            <div class="text-center">
+                <p class="text-white small">
+                    &copy; Copyright SPB - Sistema Prefeitura Brasil - Direitos autorais da Siapro Sistemas LTDA
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    }*@
+

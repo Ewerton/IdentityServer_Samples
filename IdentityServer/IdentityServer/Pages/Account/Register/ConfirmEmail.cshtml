@@ -1,0 +1,55 @@
+﻿@page
+@model IdentityServer.Pages.Account.Register.ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirmação de email";
+}
+
+<div class="containerbar authenticate-bg">
+    <div class="container">
+        <div class="auth-box forgot-password-box">
+            <div class="row no-gutters align-items-center justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="auth-box-center">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="auth-box-logo mb-3 text-center">
+                                    <img src="~/images/logo-light.svg" width="350px" class="img-fluid " alt="logo">
+                                    <p class="mb-0 mt-2">O Governo Digital mais próximo do cidadão</p>
+                                </div>
+                                
+                                <hr />
+
+                                <h5 class="my-4 text-center">@ViewData["Title"]</h5>
+                                <div class="form-group">
+
+                                    @Model.StatusMessage
+
+                                    @if (Model.ShowAutoRedirectTimer && !String.IsNullOrWhiteSpace(@Model.UrlLoginRetornar))
+                                    {
+                                        <div class="pt-4 text-center">
+                                            <small>Voce será redirecionado automaticamento em <span id="spnTimer"></span> segundos.</small>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <a id="lnkUrlLoginRetornar" href="@Model.UrlLoginRetornar" class="btn btn-primary btn-lg btn-block rounded font-18">Ir para Login</a>
+                                    @if (Model.IsLocalLogin)
+                                    {
+                                        <a href="@Url.Content("~/")" class="btn btn-primary btn-lg btn-block rounded font-18">Ir para a página principal</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+    {
+    @if (Model.ShowAutoRedirectTimer && !String.IsNullOrWhiteSpace(@Model.UrlLoginRetornar))
+    {
+        <script src="~/js/confirm-email.js"></script>
+    }
+}

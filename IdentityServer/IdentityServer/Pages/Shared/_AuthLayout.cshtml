@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@RenderBody()
+
+@section scripts {
+
+    @*Renderizando os scripts da Base Layout*@
+    @RenderSection("Scripts", required: false)
+}

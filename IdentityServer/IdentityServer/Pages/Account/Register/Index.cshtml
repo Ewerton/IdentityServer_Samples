@@ -1,0 +1,133 @@
+﻿@page
+@model IdentityServer.Pages.Account.Register.RegisterModel
+@{
+    ViewData["Title"] = "Solicitação de Cadastro";
+}
+
+@*<h1>@ViewData["Title"]</h1>*@
+
+
+<div class="containerbar authenticate-bg">
+    <div class="container">
+        <div class="auth-box forgot-password-box">
+            <div class="row no-gutters align-items-center justify-content-center">
+                <div class="col-sm-12 col-md-12 col-lg-9">
+                    <div class="auth-box-center">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <div class="auth-box-logo mb-3 text-center">
+                                            <img src="~/images/logo-light.svg" width="350px" class="img-fluid " alt="logo">
+                                            <p class="mb-0 mt-2">O Governo Digital mais próximo do cidadão</p>
+                                        </div>
+                                        <hr />
+                                        <div>
+                                            <partial name="_InstrucoesAcesso" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                        <form method="post" asp-route-returnUrl="@Model.ReturnUrl" id="registerForm">
+
+                                            @* <h3 class="mb-4 text-center">@ViewData["Title"]</h3>*@
+                                            @* <div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                                            <partial name="_ValidationSummary" />
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <label asp-for="Input.NomeCompleto"></label>
+                                                    <input asp-for="Input.NomeCompleto" class="form-control" aria-required="true" />
+                                                    <span asp-validation-for="Input.NomeCompleto" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label asp-for="Input.Email"></label>
+                                                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label asp-for="Input.CPF"></label>
+                                                    <input asp-for="Input.CPF" class="form-control cpf" autocomplete="cpf" aria-required="true" />
+                                                    <span asp-validation-for="Input.CPF" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label asp-for="Input.Celular"></label>
+                                                    <input asp-for="Input.Celular" class="form-control celular" autocomplete="celular" aria-required="true" />
+                                                    <span asp-validation-for="Input.Celular" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label asp-for="Input.Password"></label>
+                                                    <input asp-for="Input.Password" class="form-control" autocomplete="password" aria-required="true" />
+                                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label asp-for="Input.ConfirmPassword"></label>
+                                                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="password" aria-required="true" />
+                                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                                </div>
+
+                                                @*Recebimento da Confirmação*@
+                                                <div class="form-group">
+                                                    <div>
+                                                        <span>Onde deseja receber a confirmação de cadastro: </span>
+                                                    </div>
+                                                    <div>
+                                                        <span id="lblLoginPorEmail" class="px-2">
+                                                            @Html.RadioButtonFor(m => m.Input.TipoConfirmacaoCadastro, TipoConfirmacaoCadastro.EMAIL, new { @id = "rdoConfirmacaoPorEmail", name = "tipoConfirmacao", Checked = Model.Input.TipoConfirmacaoCadastro == TipoConfirmacaoCadastro.EMAIL ? "checked" : "" })
+                                                            @TipoConfirmacaoCadastro.EMAIL.GetDescription()
+                                                        </span>
+                                                        <span id="lblLoginPorCPF" class="px-2">
+                                                            @Html.RadioButtonFor(m => m.Input.TipoConfirmacaoCadastro, TipoConfirmacaoCadastro.SMS, new { @id = "rdoConfirmacaoPorSMS", name = "tipoConfirmacao", Checked = Model.Input.TipoConfirmacaoCadastro == TipoConfirmacaoCadastro.SMS ? "checked" : "" })
+                                                            @TipoConfirmacaoCadastro.SMS
+                                                        </span>
+                                                    </div>
+                                                    <span asp-validation-for="Input.TipoConfirmacaoCadastro" class="text-danger"></span>
+                                                </div>
+
+                                                @*Termos e Condições*@
+                                                <div class="form-group col-md-12">
+                                                    <div class="form-check form-check-flat form-check-primary">
+                                                        <span class="form-check-label">
+                                                            <input type="checkbox" class="form-check-input" asp-for="Input.TermosECondicoesAceitos">
+                                                            Eu concordo com todos os <a href="#" id="lnkPopUpTermosECondicoes">Termos e Condições</a>
+                                                            <i class="input-helper"></i>
+                                                        </span>
+                                                        <div>
+                                                            <span asp-validation-for="Input.TermosECondicoesAceitos" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg btn-block font-18 rounded">
+                                                    Solicitar Registro
+                                                    <span id="spinnerSubmit" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                </button>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="text-center">
+
+                                    <p class="mb-0 mt-3">Já tem uma conta? <a asp-page="/Account/Login/Index">Acesse o SPB</a></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="popupTermosECondicoes" class="modal">
+    <partial name="_TermosECondicoes" />
+</div>
+
+@section Scripts {
+    @*<partial name="_ValidationScriptsPartial" />*@
+    }

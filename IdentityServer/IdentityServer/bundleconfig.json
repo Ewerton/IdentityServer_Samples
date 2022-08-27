@@ -1,0 +1,32 @@
+[
+  // Bundle de CSS geral, contendo stilos aplicaveis à todas as paginas
+  {
+    "outputFileName": "wwwroot/css/bundles/styles_bundle.min.css",
+    "inputFiles": [
+        "wwwroot/css/spb-style.css",
+        "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+        "wwwroot/css/jquery-modal/jquery-modal.min.css"
+    ]
+  },
+
+  // Bundle geral, contendo scripts comum à todas as paginas
+  {
+    "outputFileName": "wwwroot/js/bundles/scripts_bundle.min.js",
+    "inputFiles": [
+
+        //"wwwroot/lib/jquery/dist/jquery-3.6.0.js",
+        "wwwroot/lib/jquery/dist/jquery-3.6.0.slim.min.js",
+        "wwwroot/lib/inputmask/jquery.inputmask.min.js",
+        "wwwroot/lib/jquery-modal/jquery-modal.min.js",
+        "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+        "wwwroot/js/login.js"
+
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  }
+
+]
